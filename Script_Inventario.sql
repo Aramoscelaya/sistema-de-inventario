@@ -50,7 +50,6 @@ CREATE TABLE `inventario`.`usuarios` (
     `id_usuario` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	`nombre` VARCHAR(150) NOT NULL,
 	`usuario` VARCHAR(150) NOT NULL,
-    `contrasena` VARCHAR(255) NULL,
     `rol` ENUM('admin', 'colaborador') NOT NULL DEFAULT 'colaborador',
     `estatus`TINYINT(1) NOT NULL DEFAULT 1,
     `id_area` INT,
@@ -98,11 +97,11 @@ https://es.qr-code-generator.com
 */
 
 INSERT INTO Inventario.categorias (nombre_categoria, descripcion_categoria, estatus)
-VALUES ('CPU', 'Equipo de escritorio', 1), ('UPS', 'Equipo regulador de corriente', 1),
-('Laptop', 'Equipo de computo portatil', 1), ('Monitor', 'Equipo de video', 1);
+VALUES ('CPU', 'Equipo de escritorio', 1), ('Laptop', 'Equipo de computo portatil', 1),
+('Monitor', 'Equipo de video', 1), ('Mini_CPU', 'Equipo de computo ppara pantallas', 1), ('UPS', 'Equipo regulador de corriente', 1);
 
 INSERT INTO Inventario.areas (nombre_area, estatus)
-VALUES ('Sistemas', 1), ('Nexus Service', 1), ('Nexus Sales', 1), ('Avis', 1), ('Honest Inmigration', 1), ('W2FLY', 1);
+VALUES ('Nexus', 1), ('Nexus_servicio', 1), ('Crew_support', 1), ('B2B', 1), ('Honest', 1), ('Avis', 1), ('W2FLY', 1), ('Administracion', 1);
 
 INSERT INTO Inventario.productos (num_serie, nombre_producto, modelo, marca, hostname, descripcion_producto, estatus, id_area, id_categoria, usuario_modificacion)
 VALUES ('8CCDN02', 'CPU Dell', 'optiplex 3090', '', 'WPNXT30-PC', 'PC de NXT servicios', 1, 1, 1, 'WPSIS07');

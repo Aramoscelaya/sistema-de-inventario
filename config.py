@@ -28,23 +28,26 @@ global_variable_test = None
 data_connection = {
     'host': "localhost",      # Cambia si usas un servidor remoto
     'user': "root",     # Usuario de MySQL
-    'password': "0666", # Contraseña de MySQL
+    'password': "12345678", # Contraseña de MySQL
     'database': "Inventario" # Nombre de la base de datos
 }
 
 
 stateArea = {
-    'Sistemas': 1,
-    'Nexus_Service': 2,
-    'Nexus_Sales': 3,
-    'Avis': 4,
+    'Nexus': 1,
+    'Nexus_servicio': 2,
+    'Crew_support': 3,
+    'B2B': 4,
     'Honest': 5,
-    'W2FLY': 6,
+    'Avis': 6,
+    'W2FLY': 7,
+    'Administracion': 8
 }
 
 stateCategory = {
     'CPU': 1,
-    'UPS': 2,
-    'Laptop': 3,
-    'Monitor': 4,
+    'Laptop': 2,
+    'Monitor': 3,
+    'Mini_CPU': 4,
+    'UPS': 5,
 }

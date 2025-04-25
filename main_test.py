@@ -155,7 +155,7 @@ def main_csv(page: ft.Page):
         dataInsert = []
 
         try:
-            with open("inventario_test.csv", newline='', encoding='utf-8') as archivo:
+            with open("Inventario_General_wp.csv", newline='', encoding='utf-8') as archivo:
                 lector_csv = csv.reader(archivo)
                 next(lector_csv)  # Omitir encabezados
                 #INSERT INTO Inventario.productos (num_serie, nombre_producto, modelo, marca, hostname, descripcion_producto, estatus, id_area, id_categoria, usuario_modificacion)
@@ -163,11 +163,12 @@ def main_csv(page: ft.Page):
                 for fila in lector_csv:
                     idArea = stateArea[fila[1]]
                     idCategoria = stateCategory[fila[5]]
-                    dataInsert = [fila[3], "", fila[4], fila[2], fila[0], fila[8], 1, idArea, idCategoria, 'Admin']
+                    dataInsert = [fila[3], fila[4], fila[2], "", "", 0, "", fila[0], "", "", "", fila[8], 1, idArea, idCategoria, 'Admin']
                 
                     print(dataInsert)
                     
-                    sql = 'INSERT INTO productos (num_serie, nombre_producto, modelo, marca, hostname, descripcion_producto, estatus, id_area, id_categoria, usuario_modificacion) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
+                    sql = 'INSERT INTO productos (num_serie, modelo, marca, procesador, generacion, ram, almacenamiento, hostname, tamano, relacion_aspecto, entradas, descripcion_producto, estatus, id_area, id_categoria, usuario_modificacion) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
+                    #sql = 'INSERT INTO usuarios (nombre, usuario, rol, estatus, id_area, fecha_creacion, fecha_modificacion, usuario_modificacion) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,)'
                     valores = (dataInsert)
 
                     response = cursor.execute(sql, valores)

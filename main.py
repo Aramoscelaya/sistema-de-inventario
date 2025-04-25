@@ -47,7 +47,7 @@ def main(page: ft.Page):
     page.window.width = 800
     page.window.height = 650
     
-    def cambiar_pagina(seccion):
+    def cambiar_pagina(seccion = ""):
         page.controls.clear()  # 🔹 Limpia la página antes de cambiar de sección
 
         match seccion:
