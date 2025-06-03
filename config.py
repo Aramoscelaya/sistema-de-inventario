@@ -28,7 +28,7 @@ global_variable_test = None
 data_connection = {
     'host': "localhost",      # Cambia si usas un servidor remoto
     'user': "root",     # Usuario de MySQL
-    'password': "12345678", # Contraseña de MySQL
+    'password': "0666", # Contraseña de MySQL
     'database': "Inventario" # Nombre de la base de datos
 }
 

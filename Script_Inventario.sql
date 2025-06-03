@@ -106,8 +106,8 @@ VALUES ('Nexus', 1), ('Nexus_servicio', 1), ('Crew_support', 1), ('B2B', 1), ('H
 INSERT INTO Inventario.productos (num_serie, nombre_producto, modelo, marca, hostname, descripcion_producto, estatus, id_area, id_categoria, usuario_modificacion)
 VALUES ('8CCDN02', 'CPU Dell', 'optiplex 3090', '', 'WPNXT30-PC', 'PC de NXT servicios', 1, 1, 1, 'WPSIS07');
 
-INSERT INTO Inventario.usuarios (nombre, usuario, contrasena, rol, estatus, id_area, usuario_modificacion)
-VALUES ('Agente 1', 'WPNXT0001', '1234', 'colaborador', 1, 2, 'admin'), ('Agente 2', 'WPNXT0002', '1234', 'colaborador', 1, 2, 'admin'), ('Agente 3', 'WPHI0001', '1234', 'colaborador', 1, 5, 'admin');
+INSERT INTO Inventario.usuarios (nombre, usuario, rol, estatus, id_area, usuario_modificacion)
+VALUES ('Agente 1', 'WPNXT0001', 'colaborador', 1, 2, 'admin'), ('Agente 2', 'WPNXT0002', 'colaborador', 1, 2, 'admin'), ('Agente 3', 'WPHI0001', 'colaborador', 1, 5, 'admin');
 
 INSERT INTO Inventario.mantenimientos (descripcion_manto, estatus, id_producto, usuario_modificacion)
 VALUES ('test pendiente', 1, '8CCDN02', 'WPSIS07');

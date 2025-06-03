@@ -10,11 +10,15 @@ from components.dropdown import get_dropdown
 from database import data_table_home, get_data_user_dropdown
 #from products import
 import config
+from routes import route_handler
+
 
 
 #scanning = False
 result_text = None
 page = None
+# Dato compartido entre páginas (puede ser una clase o variable global)
+shared_data = {"value": ""}
 
 #pygame.mixer.init()
 #sound = pygame.mixer.Sound('beep.mp3')
@@ -183,13 +187,69 @@ def assignment(p: ft.Page):
     )'''
     global page 
     page = p 
-    page.title = "Dropdown en Flet"
+    page.title = "Asignaciones - equipos"
+
+
+     # Función para navegar entre páginas
+    def route_change(route):
+        #page.views.clear()
+        if page.route == "/":
+            page.views.append(main_view())
+        elif page.route == "/second":
+            page.views.append(second_view())
+        page.update()
+
+     # Vista principal
+    def main_view():
+        txt_value = ft.Text(shared_data["value"], size=20)
+
+        def go_to_second(e):
+            page.go("/second")
+
+        return ft.View(
+            route="/",
+            controls=[
+                ft.Text("Ventana principal", size=30),
+                txt_value,
+                ft.ElevatedButton("Ir a ventana secundaria", on_click=go_to_second),
+            ],
+        )
+
+    # Vista secundaria
+    def second_view():
+        input_text = ft.TextField(label="Escribe algo")
+
+        def send_data(e):
+            shared_data["value"] = input_text.value
+            page.go("/")  # volver a principal
+
+        return ft.View(
+            route="/second",
+            controls=[
+                ft.Text("Ventana secundaria", size=30),
+                input_text,
+                ft.ElevatedButton("Enviar a principal", on_click=send_data),
+            ],
+        )
+
+    page.on_route_change = route_change
+    page.go("/")
 
     # Lista de opciones dinámicas
-    opciones = get_data_user_dropdown()
-    contenedor = get_dropdown(opciones, page)
-    page.add(contenedor, alert_dialog(page))
+    #opciones = get_data_user_dropdown()
+    #contenedor = get_dropdown(opciones, page)
+    #page.add(contenedor, alert_dialog(page))
+
+
+def main_routes(page: ft.Page):
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.title = "Control de inventariado y mantenimientos"
+    page.window.width = 800
+    page.window.height = 650
+
+    page.on_route_change = lambda route: route_handler(page)
+    page.go("/")
 
 #ft.app(target=main, view=ft.WEB_BROWSER)
 #ft.app(target=main, view=ft.FLET_APP)
-ft.app(target=main)
+ft.app(target=main_routes)
