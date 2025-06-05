@@ -94,7 +94,7 @@ def data_table_home():
     create_cursor()
     datos = []
     try:
-        cursor.execute("SELECT id_producto, num_serie, hostname FROM productos")  
+        cursor.execute("SELECT id_producto, num_serie, hostname, id_area, id_categoria, estatus FROM productos")  
         datos = cursor.fetchall()  # Obtiene todos los registros
         close_connection()
     except mysql.connector.errors.ProgrammingError as e:

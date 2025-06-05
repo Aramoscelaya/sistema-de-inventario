@@ -5,9 +5,9 @@ def home_view(page):
     opciones = [
         {"label": "Asignaciones", "icon": ft.Icons.ASSIGNMENT_ADD, "ruta": "/assignment"},
         {"label": "Mantenimientos", "icon": ft.Icons.CONSTRUCTION, "ruta": "/maintenances"},
-        {"label": "Reportes", "icon": ft.Icons.ASSESSMENT, "ruta": "/reports"},
         {"label": "Dispositivos", "icon": ft.Icons.DEVICES_OTHER_ROUNDED, "ruta": "/devices"},
         {"label": "Usuarios", "icon": ft.Icons.PEOPLE, "ruta": "/users"},
+        {"label": "Reportes", "icon": ft.Icons.ASSESSMENT, "ruta": "/reports"},
         {"label": "Ayuda", "icon": ft.Icons.HELP, "ruta": "/help"},
     ]
 
@@ -34,7 +34,7 @@ def home_view(page):
     return ft.View(
         route="/",
         controls=[
-            ft.Text("Menú Principal", size=30, weight=ft.FontWeight.BOLD),
+            ft.Text("Regresar", size=30, weight=ft.FontWeight.BOLD),
             ft.GridView(
                 expand=True,
                 runs_count=3,  # Número de columnas deseadas en pantallas normales

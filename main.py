@@ -252,4 +252,5 @@ def main_routes(page: ft.Page):
 
 #ft.app(target=main, view=ft.WEB_BROWSER)
 #ft.app(target=main, view=ft.FLET_APP)
+#ft.app(target=main)
 ft.app(target=main_routes)

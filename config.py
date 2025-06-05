@@ -51,3 +51,22 @@ stateCategory = {
     'Mini_CPU': 4,
     'UPS': 5,
 }
+
+state_area = {
+    1 : 'Nexus',
+    2 : 'Nexus_servicio',
+    3 : 'Crew_support',
+    4 : 'B2B',
+    5 : 'Honest',
+    6 : 'Avis',
+    7 : 'W2FLY',
+    8 : 'Administracion'
+}
+
+state_category = {
+    1 : 'CPU',
+    2 : 'Laptop',
+    3 : 'Monitor',
+    4 : 'Mini_CPU',
+    5 : 'UPS'
+}

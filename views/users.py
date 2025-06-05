@@ -6,6 +6,6 @@ def usuario_view(page):
         [
             ft.Text("Formulario de Usuario"),
             ft.TextField(label="Nombre"),
-            ft.ElevatedButton("Volver", on_click=lambda e: page.go("/"))
+            ft.ElevatedButton("Regresar", on_click=lambda e: page.go("/"))
         ]
     )
