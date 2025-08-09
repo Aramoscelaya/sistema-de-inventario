@@ -1,4 +1,6 @@
 import flet as ft
+from routes import route_handler
+
 #import threading
 from camera import get_camera, get_frame, encode_frame_to_base64, start_scan, close_camera
 from scanner import scan_code
@@ -7,10 +9,9 @@ from components.dropdown import get_dropdown
 #import cv2
 #import pygame
 #import time
-from database import data_table_home, get_data_user_dropdown
+#from database import data_table_home, get_data_user_dropdown
 #from products import
 import config
-from routes import route_handler
 
 
 
@@ -109,7 +110,7 @@ def main(page: ft.Page):
 
     page.update()
 
-def home(page):
+"""def home(page):
     datos = data_table_home()
     tabla = ft.DataTable(
         width=700,
@@ -138,7 +139,7 @@ def home(page):
         ],
         scroll="always",  # 🔥 Esto habilita el scroll correctamente
         expand=True)
-    )
+    )"""
 
 def print_global_variable():
     print(config.global_variable_test)
@@ -190,7 +191,7 @@ def assignment(p: ft.Page):
     page.title = "Asignaciones - equipos"
 
 
-     # Función para navegar entre páginas
+    # Función para navegar entre páginas
     def route_change(route):
         #page.views.clear()
         if page.route == "/":
@@ -240,15 +241,139 @@ def assignment(p: ft.Page):
     #contenedor = get_dropdown(opciones, page)
     #page.add(contenedor, alert_dialog(page))
 
-
 def main_routes(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-    page.title = "Control de inventariado y mantenimientos"
-    page.window.width = 800
+    page.title = "Control de inventariado"
+    page.window.width = 1050
     page.window.height = 650
 
     page.on_route_change = lambda route: route_handler(page)
     page.go("/")
+
+
+# Simulación de datos (esto normalmente vendría de una BD)
+PRODUCTOS = {
+    "1": {"nombre": "Laptop Dell", "precio": "15000"},
+    "2": {"nombre": "Mouse Logitech", "precio": "500"},
+    "3": {"nombre": "Monitor Samsung", "precio": "3000"},
+}
+
+def main_edit(page: ft.Page):
+
+    nombre_field = ft.TextField(label="Nombre", width=300)
+    precio_field = ft.TextField(label="Precio", width=300)
+
+    def guardar_cambios(e, producto_id):
+        PRODUCTOS[producto_id]["nombre"] = nombre_field.value
+        PRODUCTOS[producto_id]["precio"] = precio_field.value
+        page.go("/")  # Regresar al inicio
+
+    def mostrar_lista():
+        page.views.clear()
+        lista = []
+        for producto_id, datos in PRODUCTOS.items():
+            lista.append(
+                ft.Row(
+                    [
+                        ft.Text(f"{datos['nombre']} - ${datos['precio']}"),
+                        ft.IconButton(
+                            icon=ft.Icons.EDIT,
+                            tooltip="Editar",
+                            on_click=lambda e, pid=producto_id: page.go(f"/editar/{pid}")
+                        )
+                    ]
+                )
+            )
+        lista.append(
+            ft.Row(
+                [
+                    ft.Text(f"LAP TEST - $10000"),
+                    ft.IconButton(
+                        icon=ft.Icons.EDIT,
+                        tooltip="Editar",
+                        on_click=lambda e: page.go(f"/editar/4")
+                    )
+                ]
+            )
+        )
+        page.views.append(ft.View("/", controls=lista))
+        page.update()
+
+    def mostrar_edicion(producto_id):
+        producto = PRODUCTOS.get(producto_id)
+        if not producto:
+            page.snack_bar = ft.SnackBar(ft.Text("Producto no encontrado"))
+            page.snack_bar.open = True
+            page.go("/")
+            return
+
+        nombre_field.value = producto["nombre"]
+        precio_field.value = producto["precio"]
+
+        page.views.clear()
+        page.views.append(
+            ft.View(
+                f"/editar/{producto_id}",
+                [
+                    ft.Text(f"Editar producto ID: {producto_id}", size=20),
+                    nombre_field,
+                    precio_field,
+                    ft.ElevatedButton("Guardar", on_click=lambda e: guardar_cambios(e, producto_id)),
+                    ft.ElevatedButton("Cancelar", on_click=lambda e: page.go("/"))
+                ]
+            )
+        )
+        page.update()
+
+    def route_change(e):
+        route_parts = page.route.strip("/").split("/")
+        if route_parts[0] == "":
+            mostrar_lista()
+        elif route_parts[0] == "editar" and len(route_parts) > 1:
+            mostrar_edicion(route_parts[1])
+        else:
+            mostrar_lista()
+
+    page.on_route_change = route_change
+    page.go(page.route)
+
+import time
+
+def main_espera(page: ft.Page):
+    overlay = ft.Container(
+        bgcolor=ft.Colors.with_opacity(0.5, ft.Colors.BLACK),
+        content=ft.Column(
+            [
+                ft.ProgressRing(),
+                ft.Text("Cargando...", color=ft.Colors.WHITE)
+            ],
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            alignment=ft.MainAxisAlignment.CENTER,
+        ),
+        visible=False,
+        expand=True,
+    )
+
+    def mostrar_espera():
+        overlay.visible = True
+        page.update()
+        page.run_thread(tarea_larga)
+
+    def tarea_larga():
+        time.sleep(3)  # Simula proceso
+        overlay.visible = False
+        page.update()
+
+    page.add(
+        ft.Stack(
+            [
+                ft.Column([ft.ElevatedButton("Iniciar proceso", on_click=lambda e: mostrar_espera())]),
+                overlay
+            ]
+        )
+    )
+
+
 
 #ft.app(target=main, view=ft.WEB_BROWSER)
 #ft.app(target=main, view=ft.FLET_APP)

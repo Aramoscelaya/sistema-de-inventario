@@ -27,17 +27,17 @@ def get_global_variable():
     return config.global_variable_test
 
 def get_camera():
+    global cap
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
         raise Exception("No se puso abrir la camara.")
     return cap
 
 def close_camera():
-    cap = get_camera()
-    # Liberar recursos
-    cap.release()
-    cv2.destroyAllWindows()
-    print("❌ Camara cerrada")
+    if cap and cap.isOpened():
+        cap.release()
+        cv2.destroyAllWindows()
+        print("❌ Camara cerrada")
 
 def get_frame(cap):
     ret, frame = cap.read()
@@ -52,7 +52,8 @@ def encode_frame_to_base64(frame):
 def start_scan(page):
     global scanning
     scanning = True
-    threading.Thread(target=(scan_loop(page))).start()
+    scan_loop(page)
+    #threading.Thread(target=(scan_loop(page))).start()
 
 def scan_loop(page):
     cap = get_camera()
@@ -88,7 +89,8 @@ def scan_loop(page):
                         #getCode(c)
                         sound.play()
                         time.sleep(0.5)
-                        page.go("/maintenances")  # volver a principal
+                        send_data(page)
+                        #page.go("/maintenances")  # volver a principal
                         break
 
                 code_count.clear()
@@ -96,6 +98,12 @@ def scan_loop(page):
         
         page.image.src_base64 = encode_frame_to_base64(frame)
         page.update()
+
+def send_data(page):
+    #shared_data["value"] = input_text.value
+    close_camera()
+    print(f"/{shared_data["redirect"]}")
+    page.go(f"/{shared_data["redirect"]}")  # volver a principal
 
 def getCode(code):
     codes = code[0]
@@ -123,13 +131,11 @@ def getCode(code):
     result_text.value = f"Resultado: {items}"
     print(items)
 
-def bar_reader_view(page):
-    input_text = ft.TextField(label="Escaner")
-
-    def send_data(e):
-        shared_data["value"] = input_text.value
-        close_camera()
-        page.go("/maintenances")  # volver a principal
+def bar_reader_view(page, redirect):
+    #global url_redirect
+    shared_data["redirect"] = redirect
+    #url_redirect = redirect
+    #input_text = ft.TextField(label="Escaner")
 
     result_text = ft.Text(value="Resultado: ", size=20)
     
@@ -151,6 +157,6 @@ def bar_reader_view(page):
                 expand=True,
                 padding=10
             ),
-            ft.ElevatedButton("Enviar a principal", on_click=send_data),
+            #ft.ElevatedButton("Enviar a principal", on_click=send_data),
         ],
     )

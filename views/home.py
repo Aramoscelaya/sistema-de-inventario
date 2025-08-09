@@ -34,7 +34,7 @@ def home_view(page):
     return ft.View(
         route="/",
         controls=[
-            ft.Text("Regresar", size=30, weight=ft.FontWeight.BOLD),
+            ft.Text("Control de inventario", size=30, weight=ft.FontWeight.BOLD, font_family= "bodoni"),
             ft.GridView(
                 expand=True,
                 runs_count=3,  # Número de columnas deseadas en pantallas normales

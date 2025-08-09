@@ -70,3 +70,25 @@ state_category = {
     4 : 'Mini_CPU',
     5 : 'UPS'
 }
+
+state_maintenance = {
+    1 : 'Pendiente',
+    2 : 'Diagnóstico',
+    3 : 'En curso',
+    4 : 'Preventivo',
+    5 : 'Correctivo',
+    6 : 'Observacion',
+    7 : 'Listo'
+}
+
+"""
+opcion = "b"
+
+switch = {
+    "a": accion_a,
+    "b": accion_b
+}
+
+# Ejecutar:
+switch.get(opcion, accion_default)()
+"""

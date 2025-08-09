@@ -4,7 +4,6 @@
 
 #ALTER TABLE productos MODIFY COLUMN id_producto INT NOT NULL AUTO_INCREMENT PRIMARY KEY;
 
-
 CREATE SCHEMA `Inventario` ;
 
 CREATE TABLE `inventario`.`categorias` (
@@ -64,7 +63,7 @@ CREATE TABLE `inventario`.`mantenimientos` (
     `estado_manto` INT NOT NULL DEFAULT 1,
     `descripcion_manto` TEXT,
     `estatus`TINYINT(1) NOT NULL DEFAULT 1,
-    `id_producto` INT,
+    `id_producto` VARCHAR(250) NOT NULL,
     `fecha_creacion` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	`fecha_modificacion` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	`usuario_modificacion` VARCHAR(50) NOT NULL,

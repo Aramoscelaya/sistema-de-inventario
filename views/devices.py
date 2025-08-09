@@ -1,12 +1,13 @@
 import flet as ft
-from database import data_table_home
+#from database import data_table_home
+from services.products_service import get_products_table
 from config import state_area, state_category
 
 def device_view(page):
-    datos = data_table_home()
+    datos = get_products_table()
     
     # Campo de búsqueda
-    filtro = ft.TextField(label="Buscar por nombre o correo", on_change=lambda e: actualizar_tabla())
+    #filtro = ft.TextField(label="Buscar por nombre o correo", on_change=lambda e: actualizar_tabla())
 
     tabla = ft.DataTable(
         width=800,
@@ -25,12 +26,12 @@ def device_view(page):
     for row in datos:
         tabla.rows.append(ft.DataRow(
             cells=[
-                ft.DataCell(ft.Text(str(row[0]))),
-                ft.DataCell(ft.Text(state_area[row[3]])),
-                ft.DataCell(ft.Text(row[1])),
-                ft.DataCell(ft.Text(state_category[row[4]])),
-                ft.DataCell(ft.Text(row[2])),
-                ft.DataCell(ft.Text(row[5])),  # Formato de precio
+                ft.DataCell(ft.Text(str(row.id_producto))),
+                ft.DataCell(ft.Text(state_area[row.id_area])),
+                ft.DataCell(ft.Text(row.num_serie)),
+                ft.DataCell(ft.Text(state_category[row.id_categoria])),
+                ft.DataCell(ft.Text(row.hostname)),
+                ft.DataCell(ft.Text(row.estatus)),  # Formato de precio
             ]
         ))
     page.update()

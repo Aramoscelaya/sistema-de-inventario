@@ -1,5 +1,4 @@
 import threading
-#import psycopg2
 from config import data_connection, stateArea, stateCategory
 import mysql.connector
 import datetime
@@ -8,10 +7,8 @@ import json
 cursor = None
 DB_CONECT = None
 
-def create_connection():
+def get_connection():
     try:
-        global DB_CONECT
-        
         DB_CONECT = mysql.connector.connect(
             host = data_connection['host'],
             user = data_connection['user'],
@@ -19,7 +16,6 @@ def create_connection():
             database = data_connection['database']
         )
         print("✅ Conexión exitosa")
-        return DB_CONECT
 
     except mysql.connector.Error as e:
         print(f"❌ Error conectando a MySQL: {e}")
@@ -27,6 +23,27 @@ def create_connection():
     finally:
         if 'conexion' in locals() and DB_CONECT.is_connected():
             DB_CONECT.close()
+
+    return DB_CONECT
+
+def create_connection():
+    try:
+        DB_CONECT = mysql.connector.connect(
+            host = data_connection['host'],
+            user = data_connection['user'],
+            password = data_connection['password'],
+            database = data_connection['database']
+        )
+        print("✅ Conexión exitosa")
+
+    except mysql.connector.Error as e:
+        print(f"❌ Error conectando a MySQL: {e}")
+        return False
+    finally:
+        if 'conexion' in locals() and DB_CONECT.is_connected():
+            DB_CONECT.close()
+
+    return DB_CONECT
 
 def create_cursor():
     global cursor
@@ -41,10 +58,6 @@ def close_connection():
         # Cierra la conexión al finalizar
         DB_CONECT.close()
         print("✅ Conexión cerrada a MySQL")
-
-def guardar_codigo(codigo):
-    pass#thread = threading.Thread(target=insertar_codigo, args=(codigo))
-    #thread.start()
 
 def create_product(data):
     create_connection()
@@ -89,30 +102,11 @@ def create_product(data):
             print("Conexión cerrada.")
     return response
 
-def data_table_home():
-    create_connection()
-    create_cursor()
-    datos = []
-    try:
-        cursor.execute("SELECT id_producto, num_serie, hostname, id_area, id_categoria, estatus FROM productos")  
-        datos = cursor.fetchall()  # Obtiene todos los registros
-        close_connection()
-    except mysql.connector.errors.ProgrammingError as e:
-        print(f"❌ Error en la consulta SQL: {e}")
-    except mysql.connector.Error as e:
-        print(f"⚠️ Error en la conexión o ejecución: {e}")
-    finally:
-        if 'cursor' in locals() and cursor:
-            cursor.close()
-        if 'conexion' in locals() and DB_CONECT.is_connected():
-            close_connection()
-            print("Conexión cerrada.")
-    
-    return datos
-    
 def get_data_user_dropdown():
-    create_connection()
-    create_cursor()
+    conn = get_connection()
+    cursor = conn.cursor()
+    #create_connection()
+    #create_cursor()
     datos = []
     try:
         cursor.execute("SELECT id_usuario, usuario, nombre FROM usuarios")  
@@ -125,6 +119,7 @@ def get_data_user_dropdown():
 
         print(datos)
         close_connection()
+        conn.close()
     except mysql.connector.errors.ProgrammingError as e:
         print(f"❌ Error en la consulta SQL: {e}")
     except mysql.connector.Error as e:
@@ -137,6 +132,7 @@ def get_data_user_dropdown():
             print("Conexión cerrada.")
     
     return datos
+
 '''
 def insertar_codigo(codigo):
     cursor = DB_CONECT.cursor()
